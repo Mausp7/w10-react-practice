@@ -1,0 +1,28 @@
+body {
+	background-color: teal;
+}
+
+p.par {
+	background-color: yellow;
+}
+
+#egyedi {
+	background-color: green;
+}
+
+input[type="password"] {
+	margin: 20px 0px;
+}
+
+.card {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 250px;
+	height: 200px;
+
+	margin: 20px;
+	border: 2px solid red;
+	border-radius: 20px;
+	background-color: white;
+}
