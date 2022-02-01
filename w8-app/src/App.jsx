@@ -1,45 +1,70 @@
 import { useState } from "react";
 
+const dummyPosts = [
+  {
+    title:"Cím 1",
+    text: "Postszöveg 1",
+    date: "2022-02-01"
+  }
+];
+
 const App = () => {
+  const [posts, setPosts] = useState(dummyPosts);
+  const [inputPost, setInputPost] = useState({title: "", text: ""});
 
-  const cars = [
-    {brand: "Toyota", model: "yaris", topSpeed: "190km/h"},
-    {brand: "Mercedes", model: "C63", topSpeed: "260km/h"},
-    {brand: "Mazda", model: "6", topSpeed: "210km/h"},
-    {brand: "Mazda", model: "Civic", topSpeed: "200km/h"},
-    {brand: "Audi", model: "A4", topSpeed: "220km/h"},
-  ]
+  const todaysDate = new Date();
 
-let [isLandingPage, setterF]  = useState("");
-const [inputValue, setInputValue] = useState("");
-
-
-const handleChange = (event) => {
-  setInputValue(event.target.value);
-  console.log(event.target.value);
-};
+  const addPost = (event) => {
+    setPosts(
+      [
+        ...posts,
+        {
+          title: inputPost.title,
+          text: inputPost.text,
+          date: todaysDate.toLocaleDateString()
+        }
+      ]
+    );
+    setInputPost({title: "", text: ""});
+  };
 
   return (
-    <div>
-      <h1>Hello Word!</h1>
-      <button onClick={() => setterF("Landing")}>Landing Page</button>
-      <button onClick={() => setterF("Home")}>Home Page</button>
-      <button onClick={() => setterF("About")}>About Page</button>
+    <div className="App">
+      <h1>Blog Posts</h1>
+      <div>
+        <input 
+          type="text" 
+          placeholder="Post title" 
+          value={inputPost.title} 
+          onChange={(e) => setInputPost({...inputPost, "title": e.target.value})}
+        />
+        <textarea 
+          placeholder="Post text"
+          value={inputPost.text} 
+          onChange={(e) => setInputPost({...inputPost, "text": e.target.value})}
+        />
+        <button onClick={addPost}>Create Post</button>
+
+        <button onClick={() => setPosts([])}>Clear Posts</button>
+      </div>
+
       <hr />
 
-      {isLandingPage === "Landing" && <div>Landing Page</div>}
-      {isLandingPage === "Home" && <div>Home Page</div>}
-      {isLandingPage === "About" && <div>About Page</div>}      
-      <hr />
 
-      <input type="text" value={inputValue} onChange={handleChange} name="" id="" />
-      <button type="submit" disabled={inputValue.length < 3}>Submit</button>
-      {inputValue.length < 3 && <p>Minimum 3 character!</p>}
-      <hr />
+      {posts.map((post, index) => {
+        return (
+          <div key={index}>
+            <h2>{post.title}</h2>
+            <p>{post.text}</p>
+            <p>{post.date}</p>
 
-      <ul>
-        {cars.filter(car => car.brand.startsWith(inputValue)).map((car, i) => <li key={i} >{car.brand} - {car.model} ({car.topSpeed})</li>)}
-      </ul>
+            <input type="text" placeholder="New post title" />
+            <textarea placeholder="New post text" />
+            <button>Update</button>
+            <button onClick={() => setPosts(posts.filter((p, i) => i !== index ? p : null))} >Delete</button>
+          </div>
+        );
+      })}
     </div>
 
   );
